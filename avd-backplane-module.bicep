@@ -7,7 +7,7 @@ param workspaceName string
 param workspaceNameFriendlyName string
 param applicationgrouptype string = 'Desktop'
 param preferredAppGroupType string = 'Desktop'
-param wvdbackplanelocation string = 'eastus'
+param avdbackplanelocation string = 'eastus'
 param hostPoolType string = 'pooled'
 param loadBalancerType string = 'BreadthFirst'
 param logAnalyticsWorkspaceName string
@@ -15,10 +15,10 @@ param logAnalyticslocation string = 'westeurope'
 param logAnalyticslocation2 string = 'westeurope'
 param logAnalyticsWorkspaceSku string = 'pergb2018'
 param logAnalyticsResourceGroup string
-param wvdBackplaneResourceGroup string
+param avdBackplaneResourceGroup string
 param automationaccountname string = 'account'
 param logAnalyticsResourceGroup2 string
-param wvdBackplaneResourceGroup2 string
+param avdBackplaneResourceGroup2 string
 param validationname string
 
 param appgroupNamevalid string = '${appgroupName}validation'
@@ -29,7 +29,7 @@ param workspaceNameFriendlyNamevalid string = '${workspaceNameFriendlyName}valid
 //Create WVD Hostpool
 resource hp 'Microsoft.DesktopVirtualization/hostpools@2019-12-10-preview' = {
   name: hostpoolName
-  location: wvdbackplanelocation
+  location: avdbackplanelocation
   properties: {
     friendlyName: hostpoolFriendlyName
     hostPoolType: hostPoolType
@@ -41,7 +41,7 @@ resource hp 'Microsoft.DesktopVirtualization/hostpools@2019-12-10-preview' = {
 //Create WVD Hostpool Validation
 resource hpvalid 'Microsoft.DesktopVirtualization/hostpools@2019-12-10-preview' = {
   name: validationname
-  location: wvdbackplanelocation
+  location: avdbackplanelocation
   properties: {
     friendlyName: hostpoolFriendlyName
     hostPoolType: hostPoolType
@@ -53,7 +53,7 @@ resource hpvalid 'Microsoft.DesktopVirtualization/hostpools@2019-12-10-preview' 
 //Create WVD AppGroup
 resource ag 'Microsoft.DesktopVirtualization/applicationgroups@2019-12-10-preview' = {
   name: appgroupName
-  location: wvdbackplanelocation
+  location: avdbackplanelocation
   properties: {
     friendlyName: appgroupNameFriendlyName
     applicationGroupType: applicationgrouptype
@@ -64,7 +64,7 @@ resource ag 'Microsoft.DesktopVirtualization/applicationgroups@2019-12-10-previe
 //Create WVD AppGroup Validation
 resource agvalid 'Microsoft.DesktopVirtualization/applicationgroups@2019-12-10-preview' = {
   name: appgroupNamevalid
-  location: wvdbackplanelocation
+  location: avdbackplanelocation
   properties: {
     friendlyName: appgroupNameFriendlyNamevalid
     applicationGroupType: applicationgrouptype
@@ -75,7 +75,7 @@ resource agvalid 'Microsoft.DesktopVirtualization/applicationgroups@2019-12-10-p
 //Create WVD Workspace
 resource ws 'Microsoft.DesktopVirtualization/workspaces@2019-12-10-preview' = {
   name: workspaceName
-  location: wvdbackplanelocation
+  location: avdbackplanelocation
   properties: {
     friendlyName: workspaceNameFriendlyName
     applicationGroupReferences: [
@@ -87,7 +87,7 @@ resource ws 'Microsoft.DesktopVirtualization/workspaces@2019-12-10-preview' = {
 //Create WVD Workspace Wavlidation
 resource wsvalid 'Microsoft.DesktopVirtualization/workspaces@2019-12-10-preview' = {
   name: workspaceNamevalid
-  location: wvdbackplanelocation
+  location: avdbackplanelocation
   properties: {
     friendlyName: workspaceNameFriendlyNamevalid
     applicationGroupReferences: [
@@ -97,7 +97,7 @@ resource wsvalid 'Microsoft.DesktopVirtualization/workspaces@2019-12-10-preview'
 }
 
 //Create Azure Log Analytics Workspace
-module wvdmonitor './wvd-LogAnalytics.bicep' = {
+module avdmonitor './avd-LogAnalytics.bicep' = {
   name: 'LAWorkspace'
   scope: resourceGroup(logAnalyticsResourceGroup)
   params: {
@@ -107,13 +107,13 @@ module wvdmonitor './wvd-LogAnalytics.bicep' = {
     hostpoolName: hp.name
     workspaceName: ws.name
     logAnalyticsResourceGroup: logAnalyticsResourceGroup
-    wvdBackplaneResourceGroup: wvdBackplaneResourceGroup
+    avdBackplaneResourceGroup: avdBackplaneResourceGroup
     automationaccountname: automationaccountname
   }
 }
 
 //Create Azure Log Analytics Workspace DR
-module wvdmonitor2 './wvd-LogAnalytics.bicep' = {
+module wvdmonitor2 './avd-LogAnalytics.bicep' = {
   name: 'LAWorkspace'
   scope: resourceGroup(logAnalyticsResourceGroup2)
   params: {
@@ -123,7 +123,7 @@ module wvdmonitor2 './wvd-LogAnalytics.bicep' = {
     hostpoolName: hp.name
     workspaceName: ws.name
     logAnalyticsResourceGroup: logAnalyticsResourceGroup2
-    wvdBackplaneResourceGroup: wvdBackplaneResourceGroup2
+    avdBackplaneResourceGroup: avdBackplaneResourceGroup2
     automationaccountname: automationaccountname
   }
 }
