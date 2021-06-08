@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-//Define WVD deployment parameters
+//Define AVD deployment parameters
 param resourceGroupPrefix string = 'RG-WVD-BICEP-WVD-'
 param hostpoolName string = 'myWVDHostpool'
 param hostpoolFriendlyName string = 'My Bicep deployed Hostpool'
